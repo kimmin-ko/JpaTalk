@@ -1,0 +1,44 @@
+= Member API
+
+//== 공통사항
+//
+//=== Domain
+
+== 회원가입
+
+== Request
+
+=== Request Fields
+include::{snippets}/members-join/request-fields.adoc[]
+
+=== Request HTTP Example
+include::{snippets}/members-join/http-request.adoc[]
+
+=== CURL
+include::{snippets}/members-join/curl-request.adoc[]
+
+== Response
+
+=== Response Fields
+include::{snippets}/members-join/response-fields.adoc[]
+
+=== Response HTTP Example
+include::{snippets}/members-join/http-response.adoc[]
+
+== 이메일 중복 확인
+
+== Request
+
+=== Request HTTP Example
+include::{snippets}/members-exists-email/http-request.adoc[]
+
+=== CURL
+include::{snippets}/members-exists-email/curl-request.adoc[]
+
+== Response
+
+=== Response Fields
+include::{snippets}/members-exists-email/response-fields.adoc[]
+
+=== Response HTTP Example
+include::{snippets}/members-exists-email/http-response.adoc[]
