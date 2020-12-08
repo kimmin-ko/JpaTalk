@@ -8,11 +8,7 @@ import static org.springframework.restdocs.operation.preprocess.Preprocessors.*;
 public interface ApiDocumentationTest {
 
     static OperationRequestPreprocessor getDocumentRequest() {
-        return preprocessRequest(modifyUris()
-                        .scheme("https")
-                        .host("docs.api.com")
-                        .removePort(),
-                prettyPrint());
+        return preprocessRequest(prettyPrint());
     }
 
     static OperationResponsePreprocessor getDocumentResponse() {

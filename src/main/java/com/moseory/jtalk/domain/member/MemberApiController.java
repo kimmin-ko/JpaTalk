@@ -25,6 +25,11 @@ import static java.util.stream.Collectors.toList;
 @RequestMapping("/api/members")
 public class MemberApiController {
 
+    //TODO 테스트 코드 random 객체 확실한 단위 테스트 만들기
+    //TODO DB 정하기
+    //TODO Redis Cache 설정하기
+    //TODO L7 로드밸런싱 및 Travic CI
+
     /* inject */
     private final MemberService memberService;
     private final MemberRepository memberRepository;

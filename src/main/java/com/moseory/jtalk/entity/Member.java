@@ -83,9 +83,6 @@ public class Member extends BaseTimeEntity {
     /* 연관관계 메서드 */
 
     /* 비지니스 로직 */
-    public void addFriend(Member friend) {
-        // TODO 친구 추가
-    }
 
     /* 조회 로직 */
 
