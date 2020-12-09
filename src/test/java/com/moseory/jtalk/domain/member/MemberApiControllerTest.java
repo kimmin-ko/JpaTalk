@@ -1,6 +1,6 @@
 package com.moseory.jtalk.domain.member;
 
-import com.moseory.jtalk.domain.ab.AbstractApiControllerTest;
+import com.moseory.jtalk.domain.abstact.AbstractApiControllerTest;
 import com.moseory.jtalk.entity.Member;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -11,11 +11,11 @@ import org.springframework.test.web.servlet.ResultActions;
 
 import java.time.LocalDate;
 
-import static com.moseory.jtalk.ApiDocumentationTest.getDocumentRequest;
-import static com.moseory.jtalk.ApiDocumentationTest.getDocumentResponse;
 import static com.moseory.jtalk.DocumentFormatGenerator.getDateFormat;
 import static com.moseory.jtalk.DocumentFormatGenerator.getPhoneNumberFormat;
 import static com.moseory.jtalk.domain.member.MemberApiController.MemberJoinRequest;
+import static com.moseory.jtalk.domain.restdocs.ApiDocumentationTest.getDocumentRequest;
+import static com.moseory.jtalk.domain.restdocs.ApiDocumentationTest.getDocumentResponse;
 import static org.hamcrest.Matchers.is;
 import static org.mockito.BDDMockito.given;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
@@ -70,7 +70,7 @@ class MemberApiControllerTest extends AbstractApiControllerTest {
                 .andExpect(jsonPath("$.status", is(200)))
                 .andExpect(jsonPath("$.message", is("회원가입을 성공하였습니다.")))
                 .andExpect(jsonPath("$.data.id", is(0)))
-                .andDo(document("members-join",
+                .andDo(document("members/join",
                         getDocumentRequest(),
                         getDocumentResponse(),
                         requestFields(
@@ -82,9 +82,8 @@ class MemberApiControllerTest extends AbstractApiControllerTest {
                                 fieldWithPath("birthDate").type(STRING).attributes(getDateFormat()).description("생년월일")
                         ),
                         responseFields(
-                                fieldWithPath("status").type(NUMBER).description("결과 코드"),
-                                fieldWithPath("message").type(STRING).description("결과 메시지"),
-                                fieldWithPath("data.id").type(NUMBER).description("가입한 회원 아이디")
+                                beneathPath("data").withSubsectionId("data"),
+                                fieldWithPath("id").type(NUMBER).description("가입한 회원 아이디")
                         )));
     }
 
@@ -104,20 +103,42 @@ class MemberApiControllerTest extends AbstractApiControllerTest {
 
         // then
         result.andExpect(status().isOk())
+                .andExpect(jsonPath("$.status", is(200)))
                 .andExpect(jsonPath("$.message", is("이미 존재하는 이메일입니다.")))
                 .andExpect(jsonPath("$.data.exists", is(true)))
-                .andDo(document("members-exists-email",
+                .andDo(document("members/exists-email",
                         getDocumentRequest(),
                         getDocumentResponse(),
                         pathParameters(
-                            parameterWithName("email").description("이메일")
+                                parameterWithName("email").description("이메일")
                         ),
                         responseFields(
-                                fieldWithPath("status").type(NUMBER).description("결과 코드"),
-                                fieldWithPath("message").type(STRING).description("결과 메세지"),
-                                fieldWithPath("data.exists").type(BOOLEAN).description("이메일 존재 여부")
+                                beneathPath("data").withSubsectionId("data"),
+                                fieldWithPath("exists").type(BOOLEAN).description("이메일 존재 여부")
                         ))
                 );
+    }
+
+    @Test
+    @DisplayName("account 존재 유무 체크")
+    void existsAccount() throws Exception {
+        // given
+        String account = "memberA Account";
+
+        given(memberRepository.existsByAccount(account)).willReturn(true);
+
+        // when
+        ResultActions result = mockMvc.perform(
+                get("/api/members/exists/account/{account}", account)
+                        .accept(MediaType.APPLICATION_JSON)
+        );
+
+        // then    
+        result
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.status", is(200)))
+                .andExpect(jsonPath("$.message", is("이미 존재하는 계정입니다.")));
+//                .andExpect(jsonPath("$.data"))
 
     }
 

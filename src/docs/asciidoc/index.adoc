@@ -1,0 +1,80 @@
+ifndef::snippets[]
+:snippets:../../../build/generated-snippets
+endif::[]
+= J-Talk API Document
+:doctype: book
+:icons: font
+:source-highlighter: highlightjs
+:toc: left
+:toclevels: 3
+:sectlinks:
+:docinfo: shared-head
+
+[[introduction]]
+== 소개
+
+J-Talk Spring Rest Docs API
+
+[[common]]
+== 공통 사항
+
+=== 환경
+
+|===
+| 환경 | 도메인
+
+| 개발서버
+| `https://dev.jtalk.com`
+
+| 운영 서버
+| `https://jtalk.com`
+|===
+
+=== Common Response
+
+include::{snippets}/common/custom-response-fields.adoc[]
+
+&#160;
+
+== Members API
+
+=== 회원가입
+
+==== Request
+
+CURL:
+include::{snippets}/members/join/curl-request.adoc[]
+
+URL:
+include::{snippets}/members/join/http-request.adoc[]
+include::{snippets}/members/join/request-fields.adoc[]
+
+==== Response
+
+HTTP Example:
+include::{snippets}/members/join/http-response.adoc[]
+include::{snippets}/members/join/response-fields-data.adoc[]
+
+=== 이메일 중복 확인
+
+==== Request
+
+HTTP Example:
+include::{snippets}/members/exists-email/http-request.adoc[]
+
+CURL:
+include::{snippets}/members/exists-email/curl-request.adoc[]
+
+==== Response
+
+HTTP Example:
+include::{snippets}/members/exists-email/http-response.adoc[]
+include::{snippets}/members/exists-email/response-fields-data.adoc[]
+
+
+=== 계정 중복 확인
+
+==== Request
+
+HTTP Example:
+include::{snippets}/

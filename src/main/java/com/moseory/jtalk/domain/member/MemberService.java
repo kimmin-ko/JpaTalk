@@ -27,13 +27,16 @@ public class MemberService {
     }
 
     public Long addFriend(Long memberId, Long friendId) {
-        Member member = memberRepository.findById(memberId).orElseThrow(() -> new EntityNotFoundException("회원을 찾을 수 없습니다"));
-        Member friend = memberRepository.findById(friendId).orElseThrow(() -> new EntityNotFoundException("친구을 찾을 수 없습니다"));
+        Member member = memberRepository.findById(memberId)
+                .orElseThrow(() -> new EntityNotFoundException("회원을 찾을 수 없습니다"));
+
+        Member friend = memberRepository.findById(friendId)
+                .orElseThrow(() -> new EntityNotFoundException("친구를 찾을 수 없습니다"));
 
         FriendRelation friendRelation = FriendRelation.create(member, friend);
-        FriendRelation savedFriendRelation = friendRelationRepository.save(friendRelation);
+        friendRelationRepository.save(friendRelation);
 
-        return savedFriendRelation.getId();
+        return friendRelation.getId();
     }
 
     /* private method */

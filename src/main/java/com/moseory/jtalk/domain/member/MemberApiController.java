@@ -6,13 +6,11 @@ import com.moseory.jtalk.entity.enumeration.FriendRelationStatus;
 import com.moseory.jtalk.global.standard.ResultResponse;
 import lombok.*;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.persistence.EntityNotFoundException;
 import javax.validation.Valid;
 import javax.validation.constraints.*;
-import java.net.URI;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -97,7 +95,9 @@ public class MemberApiController {
     /* nested class */
     // == Request ==
     @Data
+    @Builder
     @NoArgsConstructor
+    @AllArgsConstructor
     public static class MemberJoinRequest {
 
         @NotBlank(message = "계정 아이디는 필수값 입니다.")
@@ -120,23 +120,16 @@ public class MemberApiController {
         @Past(message = "잘못된 생년월일입니다.")
         @NotNull(message = "생년월일은 필수값 입니다.")
         private LocalDate birthDate;
-
-        @Builder
-        public MemberJoinRequest(String account, String email, String password, String name, String phoneNumber, LocalDate birthDate) {
-            this.account = account;
-            this.email = email;
-            this.password = password;
-            this.name = name;
-            this.phoneNumber = phoneNumber;
-            this.birthDate = birthDate;
-        }
     }
 
     // == Response ==
     @Data
-    @AllArgsConstructor
     static class MemberJoinResponse {
         private Long id;
+
+        public MemberJoinResponse(Long id) {
+            this.id = id;
+        }
     }
 
     @Data
@@ -153,6 +146,7 @@ public class MemberApiController {
 
     @Data
     @Builder
+    @AllArgsConstructor
     static class MemberDto {
         private Long memberId;
         private List<FriendRelationDto> friends;
@@ -182,6 +176,7 @@ public class MemberApiController {
     }
 
     @Data
+    @AllArgsConstructor
     static class FriendRelationDto {
         private Long friendsRelationId;
         private String friendName;
@@ -196,7 +191,7 @@ public class MemberApiController {
         }
     }
 
-    @Getter
+    @Data
     @AllArgsConstructor
     static class AddFriendResponse {
         private Long id;

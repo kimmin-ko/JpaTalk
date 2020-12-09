@@ -1,6 +1,8 @@
 package com.moseory.jtalk.domain.member;
 
 import com.moseory.jtalk.domain.abstact.AbstractServiceTest;
+import com.moseory.jtalk.domain.friendrelation.FriendRelationRepository;
+import com.moseory.jtalk.entity.FriendRelation;
 import com.moseory.jtalk.entity.Member;
 import com.moseory.jtalk.entity.enumeration.FriendRelationStatus;
 import com.moseory.jtalk.global.exception.business.DuplicateAccountException;
@@ -8,18 +10,16 @@ import com.moseory.jtalk.global.exception.business.DuplicateEmailException;
 import io.github.benas.randombeans.EnhancedRandomBuilder;
 import io.github.benas.randombeans.api.EnhancedRandom;
 import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.time.LocalDate;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.BDDMockito.then;
 import static org.mockito.Mockito.times;
@@ -31,6 +31,9 @@ class MemberServiceTest extends AbstractServiceTest {
 
     @Mock
     MemberRepository memberRepository;
+
+    @Mock
+    FriendRelationRepository friendRelationRepository;
 
     static EnhancedRandom memberCreator;
     static EnhancedRandom friendRelationCreator;
@@ -85,10 +88,22 @@ class MemberServiceTest extends AbstractServiceTest {
         given(memberRepository.findById(1L)).willReturn(Optional.of(member));
         given(memberRepository.findById(2L)).willReturn(Optional.of(friend));
 
+        given(friendRelationRepository.save(any())).willReturn(
+                FriendRelation.builder()
+                        .member(member)
+                        .friend(friend)
+                        .friendName(friend.getName())
+                        .status(FriendRelationStatus.NORMAL)
+                        .build()
+        );
+
         // when
+        memberService.addFriend(1L, 2L);
 
         // then
-
+        then(memberRepository).should(times(2)).findById(any());
+        then(friendRelationRepository).should(times(1)).save(any());
+        then(friendRelationRepository).shouldHaveNoMoreInteractions();
     }
 
     @Test

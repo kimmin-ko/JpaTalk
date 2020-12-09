@@ -1,4 +1,4 @@
-package com.moseory.jtalk;
+package com.moseory.jtalk.domain.restdocs;
 
 import org.springframework.restdocs.operation.preprocess.OperationRequestPreprocessor;
 import org.springframework.restdocs.operation.preprocess.OperationResponsePreprocessor;
