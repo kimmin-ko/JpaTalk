@@ -1,9 +1,7 @@
 package com.moseory.jtalk.entity;
 
 import com.moseory.jtalk.entity.base.BaseTimeEntity;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 import java.time.LocalDate;
@@ -16,7 +14,9 @@ import static lombok.AccessLevel.PROTECTED;
 
 @Getter
 @Entity
+//@EqualsAndHashCode(callSuper = false)
 @NoArgsConstructor(access = PROTECTED)
+@ToString(of = {"id", "account", "email", "password", "name", "phoneNumber", "stateMessage", "profileUrl", "birthDate", "withdrawalDate"})
 public class Member extends BaseTimeEntity {
 
     @Id

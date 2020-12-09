@@ -137,9 +137,19 @@ class MemberApiControllerTest extends AbstractApiControllerTest {
         result
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.status", is(200)))
-                .andExpect(jsonPath("$.message", is("이미 존재하는 계정입니다.")));
-//                .andExpect(jsonPath("$.data"))
-
+                .andExpect(jsonPath("$.message", is("이미 존재하는 계정입니다.")))
+                .andExpect(jsonPath("$.data.exists", is(true)))
+                .andDo(document("members/exists-account",
+                        getDocumentRequest(),
+                        getDocumentResponse(),
+                        pathParameters(
+                                parameterWithName("account").description("계정")
+                        ),
+                        responseFields(
+                                beneathPath("data").withSubsectionId("data"),
+                                fieldWithPath("exists").type(BOOLEAN).description("계정 존재 여부")
+                        ))
+                );
     }
 
 }

@@ -13,6 +13,7 @@ import javax.persistence.EntityNotFoundException;
 import java.time.LocalDate;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.BDDMockito.given;
 
 class MemberRepositoryTest extends AbstractRepositoryTest {
 

@@ -71,10 +71,9 @@ HTTP Example:
 include::{snippets}/members/exists-email/http-response.adoc[]
 include::{snippets}/members/exists-email/response-fields-data.adoc[]
 
-
 === 계정 중복 확인
 
 ==== Request
 
 HTTP Example:
-include::{snippets}/
+include::{snippets}/members/
