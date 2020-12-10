@@ -80,7 +80,8 @@ public class MemberApiController {
 
     @PostMapping("/{memberId}/friends/{friendId}")
     public ResultResponse<AddFriendResponse> addFriends(@PathVariable("memberId") Long memberId,
-                                                        @PathVariable("friendId") Long friendId) {
+                                                        @PathVariable("friendId")
+                                                                Long friendId) {
         Long friendRelationId = memberService.addFriend(memberId, friendId);
 
         return ResultResponse.<AddFriendResponse>builder()
@@ -130,6 +131,7 @@ public class MemberApiController {
         public MemberJoinResponse(Long id) {
             this.id = id;
         }
+
     }
 
     @Data
@@ -178,13 +180,13 @@ public class MemberApiController {
     @Data
     @AllArgsConstructor
     static class FriendRelationDto {
-        private Long friendsRelationId;
+        private Long friendRelationId;
         private String friendName;
         private FriendRelationStatus status;
         private LocalDateTime createdDate;
 
         public FriendRelationDto(FriendRelation friendRelation) {
-            this.friendsRelationId = friendRelation.getId();
+            this.friendRelationId = friendRelation.getId();
             this.friendName = friendRelation.getFriendName();
             this.status = friendRelation.getStatus();
             this.createdDate = friendRelation.getCreatedDate();

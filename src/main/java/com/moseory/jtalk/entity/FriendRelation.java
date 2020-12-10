@@ -66,4 +66,11 @@ public class FriendRelation {
         return friendRelation;
     }
 
+    /* 테스트 메서드 */
+    public void setMemberAndFriend(Member member, Member friend) {
+        this.member = member;
+        this.friend = friend;
+        this.friendName = friend.getName();
+    }
+
 }

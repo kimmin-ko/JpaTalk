@@ -1,0 +1,34 @@
+{
+  "status": 200,
+  "message": "548ë² íìì ì¡°ííììµëë¤.",
+  "data": {
+    "memberId": 548,
+    "friends": [
+      {
+        "friendRelationId": 69,
+        "friendName": "ovI",
+        "status": "NORMAL",
+        "createdDate": "2020-12-10T21:19:39.236"
+      },
+      {
+        "friendRelationId": 509,
+        "friendName": "ojTdQohE",
+        "status": "NORMAL",
+        "createdDate": "2020-12-10T21:19:39.236"
+      },
+      {
+        "friendRelationId": 915,
+        "friendName": "bmcvjCWxL",
+        "status": "NORMAL",
+        "createdDate": "2020-12-10T21:19:39.236"
+      }
+    ],
+    "account": "AzCuqVTp",
+    "email": "heriberto.kreiger@gmail.com",
+    "name": "KFFNjd",
+    "phoneNumber": "020-3370-2651",
+    "stateMessage": "Wpzdkkve",
+    "profileUrl": "hCmS",
+    "birthDate": "1989-01-21"
+  }
+}

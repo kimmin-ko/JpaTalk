@@ -40,32 +40,50 @@ include::{snippets}/common/custom-response-fields.adoc[]
 
 === 회원가입
 
-==== Request
+`*Request*`
 
 CURL:
 include::{snippets}/members/join/curl-request.adoc[]
 
-URL:
+HTTP Example:
 include::{snippets}/members/join/http-request.adoc[]
 include::{snippets}/members/join/request-fields.adoc[]
 
-==== Response
+`*Response*`
 
 HTTP Example:
 include::{snippets}/members/join/http-response.adoc[]
 include::{snippets}/members/join/response-fields-data.adoc[]
 
+=== 회원 조회
+
+`*Request*`
+
+CURL:
+include::{snippets}/members/find-by-id/curl-request.adoc[]
+
+HTTP Example:
+include::{snippets}/members/find-by-id/http-request.adoc[]
+include::{snippets}/members/find-by-id/path-parameters.adoc[]
+
+`*Response*`
+
+HTTP Example:
+include::{snippets}/members/find-by-id/http-response.adoc[]
+include::{snippets}/members/find-by-id/response-fields-data.adoc[]
+
 === 이메일 중복 확인
 
-==== Request
+`*Request*`
 
 HTTP Example:
 include::{snippets}/members/exists-email/http-request.adoc[]
+include::{snippets}/members/exists-email/path-parameters.adoc[]
 
 CURL:
 include::{snippets}/members/exists-email/curl-request.adoc[]
 
-==== Response
+`*Response*`
 
 HTTP Example:
 include::{snippets}/members/exists-email/http-response.adoc[]
@@ -73,7 +91,17 @@ include::{snippets}/members/exists-email/response-fields-data.adoc[]
 
 === 계정 중복 확인
 
-==== Request
+`*Request*`
 
 HTTP Example:
-include::{snippets}/members/
+include::{snippets}/members/exists-account/http-request.adoc[]
+include::{snippets}/members/exists-account/path-parameters.adoc[]
+
+CURL:
+include::{snippets}/members/exists-account/curl-request.adoc[]
+
+`*Response*`
+
+HTTP Example:
+include::{snippets}/members/exists-account/http-response.adoc[]
+include::{snippets}/members/exists-account/response-fields-data.adoc[]

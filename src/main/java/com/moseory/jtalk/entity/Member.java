@@ -14,7 +14,6 @@ import static lombok.AccessLevel.PROTECTED;
 
 @Getter
 @Entity
-//@EqualsAndHashCode(callSuper = false)
 @NoArgsConstructor(access = PROTECTED)
 @ToString(of = {"id", "account", "email", "password", "name", "phoneNumber", "stateMessage", "profileUrl", "birthDate", "withdrawalDate"})
 public class Member extends BaseTimeEntity {
