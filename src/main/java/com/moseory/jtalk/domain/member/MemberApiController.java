@@ -4,13 +4,17 @@ import com.moseory.jtalk.entity.FriendRelation;
 import com.moseory.jtalk.entity.Member;
 import com.moseory.jtalk.entity.enumeration.FriendRelationStatus;
 import com.moseory.jtalk.global.standard.ResultResponse;
+import com.moseory.jtalk.global.validator.PhoneNumber;
 import lombok.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 
 import javax.persistence.EntityNotFoundException;
 import javax.validation.Valid;
-import javax.validation.constraints.*;
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Past;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -80,8 +84,7 @@ public class MemberApiController {
 
     @PostMapping("/{memberId}/friends/{friendId}")
     public ResultResponse<AddFriendResponse> addFriends(@PathVariable("memberId") Long memberId,
-                                                        @PathVariable("friendId")
-                                                                Long friendId) {
+                                                        @PathVariable("friendId") Long friendId) {
         Long friendRelationId = memberService.addFriend(memberId, friendId);
 
         return ResultResponse.<AddFriendResponse>builder()
@@ -114,7 +117,7 @@ public class MemberApiController {
         @NotBlank(message = "이름은 필수값 입니다.")
         private String name;
 
-        @Size(max = 13)
+        @PhoneNumber
         //TODO phoneNumber 어노테이션 만들어보기
         private String phoneNumber;
 

@@ -32,6 +32,7 @@ import static io.github.benas.randombeans.randomizers.PhoneNumberRandomizer.aNew
 import static io.github.benas.randombeans.randomizers.range.LongRangeRandomizer.aNewLongRangeRandomizer;
 import static org.hamcrest.Matchers.*;
 import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.mock;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.get;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.post;
@@ -78,7 +79,7 @@ class MemberApiControllerTest extends AbstractApiControllerTest {
     }
 
     @Test
-    @DisplayName("회원가입 성공 테스트")
+    @DisplayName("정상적인 회원가입 성공 테스트")
     void join() throws Exception {
         // given
         MemberJoinRequest memberJoinRequest = MemberJoinRequest.builder()
@@ -125,8 +126,10 @@ class MemberApiControllerTest extends AbstractApiControllerTest {
                         )));
     }
 
+    //TODO 비정상적인 회원가입 실패 테스트
+
     @Test
-    @DisplayName("email 존재 유무 체크")
+    @DisplayName("email 존재 유무 둘다 체크")
     void existsEmail() throws Exception {
         // given
         String email = "memberA@gmail.com";
@@ -158,7 +161,7 @@ class MemberApiControllerTest extends AbstractApiControllerTest {
     }
 
     @Test
-    @DisplayName("account 존재 유무 체크")
+    @DisplayName("account 존재 유무 둘다 체크")
     void existsAccount() throws Exception {
         // given
         String account = "memberA Account";
@@ -189,6 +192,44 @@ class MemberApiControllerTest extends AbstractApiControllerTest {
                         ))
                 );
     }
+
+    @Test
+    @DisplayName("정상적인 회원 ID와 친구 ID로 친구 추가 하기")
+    void addFriends() throws Exception {
+        // given
+        Long memberId = 1L;
+        Long friendId = 2L;
+        Long friendRelationId = 3L;
+
+        given(memberService.addFriend(memberId, friendId)).willReturn(friendRelationId);
+
+        // when
+        ResultActions result = mockMvc.perform(
+                post("/api/members/{memberId}/friends/{friendId}", memberId, friendId)
+                        .accept(MediaType.APPLICATION_JSON)
+        );
+
+        // then
+        result
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.status", is(200)))
+                .andExpect(jsonPath("$.message", is("친구추가를 성공하였습니다.")))
+                .andExpect(jsonPath("$.data.id", is(friendRelationId.intValue())))
+                .andDo(document("members/add-friend",
+                        getDocumentRequest(),
+                        getDocumentResponse(),
+                        pathParameters(
+                                parameterWithName("memberId").description("회원 ID"),
+                                parameterWithName("friendId").description("친구 ID")
+                        ),
+                        responseFields(
+                                beneathPath("data").withSubsectionId("data"),
+                                fieldWithPath("id").type(NUMBER).description("친구 관계 ID")
+                        )
+                ));
+    }
+
+    //TODO 비정상적인 회원 ID와 친구 ID로 친구 추가 하기
 
     @Test
     @DisplayName("추가된 친구를 포함한 Member 조회")
@@ -260,6 +301,7 @@ class MemberApiControllerTest extends AbstractApiControllerTest {
                         )
                 ));
     }
+
 
 }
 

@@ -105,3 +105,19 @@ include::{snippets}/members/exists-account/curl-request.adoc[]
 HTTP Example:
 include::{snippets}/members/exists-account/http-response.adoc[]
 include::{snippets}/members/exists-account/response-fields-data.adoc[]
+
+=== 친구 추가
+`*Request*`
+
+HTTP Example:
+include::{snippets}/members/add-friend/http-request.adoc[]
+include::{snippets}/members/add-friend/path-parameters.adoc[]
+
+CURL:
+include::{snippets}/members/add-friend/curl-request.adoc[]
+
+`*Response*`
+
+HTTP Example:
+include::{snippets}/members/add-friend/http-response.adoc[]
+include::{snippets}/members/add-friend/response-fields-data.adoc[]
