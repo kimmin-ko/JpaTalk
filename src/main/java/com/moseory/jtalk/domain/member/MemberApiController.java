@@ -27,7 +27,6 @@ import static java.util.stream.Collectors.toList;
 @RequestMapping("/api/members")
 public class MemberApiController {
 
-    //TODO 테스트 코드 random 객체 확실한 단위 테스트 만들기
     //TODO DB 정하기
     //TODO Redis Cache 설정하기
     //TODO L7 로드밸런싱 및 Travic CI
@@ -50,8 +49,8 @@ public class MemberApiController {
 
     @GetMapping("/{id}")
     public ResultResponse<MemberDto> findMember(@PathVariable("id") Long id) {
-        Member findMember = memberQueryRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("회원을 찾을 수 없습니다. id: " + id));
+        Member findMember = memberQueryRepository.findWithFriendRelationById(id)
+                .orElseThrow(() -> new EntityNotFoundException(id + "번 회원을 찾을 수 없습니다."));
 
         return ResultResponse.<MemberDto>builder()
                 .status(200)
@@ -118,7 +117,6 @@ public class MemberApiController {
         private String name;
 
         @PhoneNumber
-        //TODO phoneNumber 어노테이션 만들어보기
         private String phoneNumber;
 
         @Past(message = "잘못된 생년월일입니다.")

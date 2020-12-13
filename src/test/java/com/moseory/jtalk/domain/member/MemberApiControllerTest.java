@@ -6,14 +6,12 @@ import com.moseory.jtalk.entity.Member;
 import com.moseory.jtalk.entity.enumeration.FriendRelationStatus;
 import io.github.benas.randombeans.EnhancedRandomBuilder;
 import io.github.benas.randombeans.api.EnhancedRandom;
-import io.github.benas.randombeans.randomizers.EmailRandomizer;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
-import org.springframework.restdocs.payload.JsonFieldType;
 import org.springframework.test.web.servlet.ResultActions;
 
 import java.time.LocalDate;
@@ -253,7 +251,7 @@ class MemberApiControllerTest extends AbstractApiControllerTest {
         member.getFriends().add(friendRelation2);
         member.getFriends().add(friendRelation3);
 
-        given(memberQueryRepository.findById(member.getId())).willReturn(Optional.of(member));
+        given(memberQueryRepository.findWithFriendRelationById(member.getId())).willReturn(Optional.of(member));
 
         // when
         ResultActions result = mockMvc.perform(

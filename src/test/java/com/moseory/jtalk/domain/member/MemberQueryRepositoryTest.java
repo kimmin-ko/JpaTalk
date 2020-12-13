@@ -6,7 +6,6 @@ import com.moseory.jtalk.entity.Member;
 import com.moseory.jtalk.entity.enumeration.FriendRelationStatus;
 import io.github.benas.randombeans.EnhancedRandomBuilder;
 import io.github.benas.randombeans.api.EnhancedRandom;
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -18,10 +17,10 @@ import javax.persistence.EntityManager;
 import javax.persistence.EntityNotFoundException;
 import java.time.LocalDate;
 
-import static org.assertj.core.api.Assertions.*;
+import static org.assertj.core.api.Assertions.assertThat;
 
-@SpringBootTest
 @Transactional
+@SpringBootTest
 class MemberQueryRepositoryTest {
 
     @Autowired
@@ -41,7 +40,7 @@ class MemberQueryRepositoryTest {
     @BeforeAll
     static void setup() {
         memberCreator = EnhancedRandomBuilder.aNewEnhancedRandomBuilder()
-                .stringLengthRange(3, 5)
+                .stringLengthRange(5, 10)
                 .dateRange(LocalDate.of(1920, 1, 1), LocalDate.of(2005, 1, 1))
                 .excludeField(f -> f.getName().equals("id"))
                 .excludeField(f -> f.getName().equals("friends"))
@@ -67,12 +66,11 @@ class MemberQueryRepositoryTest {
         friendRelationRepository.save(friendRelation1);
         friendRelationRepository.save(friendRelation2);
 
-        // friend relation을 저장 후 Member를 feth join 해야하기 때문에 캐시 클리어
         em.flush();
         em.clear();
 
         // when
-        Member findMember = memberQueryRepository.findById(member.getId()).orElseThrow(EntityNotFoundException::new);
+        Member findMember = memberQueryRepository.findWithFriendRelationById(member.getId()).orElseThrow(EntityNotFoundException::new);
         Member findFriend1 = memberRepository.findById(friend1.getId()).orElseThrow(EntityNotFoundException::new);
         Member findFriend2 = memberRepository.findById(friend2.getId()).orElseThrow(EntityNotFoundException::new);
 

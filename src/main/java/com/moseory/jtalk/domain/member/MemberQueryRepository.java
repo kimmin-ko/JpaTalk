@@ -17,7 +17,7 @@ public class MemberQueryRepository {
 
     private final EntityManager em;
 
-    public Optional<Member> findById(Long id) {
+    public Optional<Member> findWithFriendRelationById(Long id) {
         JPAQueryFactory query = new JPAQueryFactory(em);
 
         Member member = query
