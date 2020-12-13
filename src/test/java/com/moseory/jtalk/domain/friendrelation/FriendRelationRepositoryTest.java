@@ -51,7 +51,7 @@ class FriendRelationRepositoryTest {
         friendRelationRepository.save(friendRelationB);
 
         // then
-        assertThat(member.getFriends().size()).isEqualTo(2);
+        assertThat(member.getFriendsRelations().size()).isEqualTo(2);
 
         assertThat(savedFriendRelation.getId()).isNotZero();
         assertThat(savedFriendRelation.getMember()).isEqualTo(member);

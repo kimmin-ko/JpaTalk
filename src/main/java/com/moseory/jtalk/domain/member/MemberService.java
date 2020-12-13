@@ -18,6 +18,7 @@ public class MemberService {
     private final MemberRepository memberRepository;
     private final FriendRelationRepository friendRelationRepository;
 
+    /* public method */
     public Long join(Member member) {
         validateDuplicateMember(member);
 

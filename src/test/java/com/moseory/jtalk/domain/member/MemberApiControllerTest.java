@@ -247,9 +247,9 @@ class MemberApiControllerTest extends AbstractApiControllerTest {
         FriendRelation friendRelation3 = friendRelationCreator.nextObject(FriendRelation.class);
         friendRelation3.setMemberAndFriend(member, friend3);
 
-        member.getFriends().add(friendRelation1);
-        member.getFriends().add(friendRelation2);
-        member.getFriends().add(friendRelation3);
+        member.getFriendsRelations().add(friendRelation1);
+        member.getFriendsRelations().add(friendRelation2);
+        member.getFriendsRelations().add(friendRelation3);
 
         given(memberQueryRepository.findWithFriendRelationById(member.getId())).willReturn(Optional.of(member));
 

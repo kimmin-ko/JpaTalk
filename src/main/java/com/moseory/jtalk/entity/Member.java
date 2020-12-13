@@ -24,7 +24,7 @@ public class Member extends BaseTimeEntity {
     private Long id;
 
     @OneToMany(mappedBy = "member")
-    private List<FriendRelation> friends = new ArrayList<>();
+    private List<FriendRelation> friendsRelations = new ArrayList<>();
 
     @Column(nullable = false, unique = true)
     private String account;

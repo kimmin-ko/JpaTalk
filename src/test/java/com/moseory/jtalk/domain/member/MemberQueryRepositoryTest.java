@@ -16,6 +16,7 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityNotFoundException;
 import java.time.LocalDate;
+import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -24,10 +25,10 @@ import static org.assertj.core.api.Assertions.assertThat;
 class MemberQueryRepositoryTest {
 
     @Autowired
-    MemberQueryRepository memberQueryRepository;
+    MemberRepository memberRepository;
 
     @Autowired
-    MemberRepository memberRepository;
+    MemberQueryRepository memberQueryRepository;
 
     @Autowired
     FriendRelationRepository friendRelationRepository;
@@ -46,6 +47,21 @@ class MemberQueryRepositoryTest {
                 .excludeField(f -> f.getName().equals("friends"))
                 .excludeField(f -> f.getName().equals("withdrawalDate"))
                 .build();
+    }
+
+    @Test
+    void findAllWithFriendRelation() {
+        // given
+
+        // when
+        List<Member> findMembers = memberQueryRepository.findAllWithFriendRelation();
+
+        for (Member findMember : findMembers) {
+            System.out.println("findMember = " + findMember);
+        }
+
+        // then
+
     }
 
     @Test
@@ -74,8 +90,8 @@ class MemberQueryRepositoryTest {
         Member findFriend1 = memberRepository.findById(friend1.getId()).orElseThrow(EntityNotFoundException::new);
         Member findFriend2 = memberRepository.findById(friend2.getId()).orElseThrow(EntityNotFoundException::new);
 
-        FriendRelation memberFriend1 = findMember.getFriends().get(0);
-        FriendRelation memberFriend2 = findMember.getFriends().get(1);
+        FriendRelation memberFriend1 = findMember.getFriendsRelations().get(0);
+        FriendRelation memberFriend2 = findMember.getFriendsRelations().get(1);
 
         // then
         assertThat(memberFriend1.getMember()).isEqualTo(findMember);
@@ -92,6 +108,5 @@ class MemberQueryRepositoryTest {
         assertThat(memberFriend2.getCreatedDate()).isNotNull();
         assertThat(memberFriend2.getId()).isNotZero();
     }
-
-
+    
 }

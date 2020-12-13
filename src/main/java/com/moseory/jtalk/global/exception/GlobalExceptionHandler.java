@@ -12,6 +12,8 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 @ControllerAdvice
 public class GlobalExceptionHandler {
 
+    //TODO 순서가 있는지 확인하기
+
     /**
      * javax.validation.Valid or org.springframework.validation.annotation.Validated
      * 해당 어노테이션 사용 시 유효성 검증에 실패하면 발생하는 예외

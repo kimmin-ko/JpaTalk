@@ -6,27 +6,51 @@ import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
-import javax.persistence.EntityManager;
+import java.util.List;
 import java.util.Optional;
 
-import static com.moseory.jtalk.entity.QMember.*;
+import static com.moseory.jtalk.entity.QFriendRelation.friendRelation;
+import static com.moseory.jtalk.entity.QMember.member;
 
 @Repository
 @RequiredArgsConstructor
 public class MemberQueryRepository {
 
-    private final EntityManager em;
+    /**
+     * 변경
+     * JPAQueryFactory Spring Bean으로 만들어서 DI하여 사용
+     */
+    private final JPAQueryFactory query;
 
-    public Optional<Member> findWithFriendRelationById(Long id) {
-        JPAQueryFactory query = new JPAQueryFactory(em);
+    public List<Member> findAllWithFriendRelation() {
+        return query
+                .selectFrom(member)
+                .join(member.friendsRelations)
+                .fetch();
+    }
 
-        Member member = query
-                .selectFrom(QMember.member)
-                .join(QMember.member.friends).fetchJoin()
-                .where(QMember.member.id.eq(id))
+    public Optional<Member> findWithFriendRelationById(Long memberId) {
+        Member findMember = query
+                .selectFrom(member)
+                .join(member.friendsRelations)
+                .where(member.id.eq(memberId))
                 .fetchOne();
 
-        return Optional.ofNullable(member);
+        return Optional.ofNullable(findMember);
+    }
+
+
+    /**
+     * 변경
+     */
+    public List<Member> findFriendsById(Long memberId) {
+        QMember friend = new QMember("friend");
+
+        return query
+                .select(friend)
+                .from(friendRelation).fetchJoin()
+                .where(friendRelation.member.id.eq(memberId))
+                .fetch();
     }
 
 }

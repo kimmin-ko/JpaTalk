@@ -22,7 +22,7 @@ public class FriendRelation {
 
     @Id
     @GeneratedValue
-    @Column(name = "relation_id")
+    @Column(name = "friend_relation_id")
     private Long id;
 
     @ManyToOne(fetch = LAZY)
@@ -54,14 +54,7 @@ public class FriendRelation {
     public static FriendRelation create(Member member, Member friend) {
         FriendRelation friendRelation = new FriendRelation(member, friend, friend.getName(), FriendRelationStatus.NORMAL);
 
-        member.getFriends().add(friendRelation);
-
-        FriendRelation.builder()
-                .member(member)
-                .friend(friend)
-                .friendName(friend.getName())
-                .status(FriendRelationStatus.NORMAL)
-                .build();
+        member.getFriendsRelations().add(friendRelation);
 
         return friendRelation;
     }
