@@ -11,6 +11,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.annotation.Rollback;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
@@ -20,6 +21,7 @@ import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+@Rollback(false)
 @Transactional
 @SpringBootTest
 class MemberQueryRepositoryTest {
@@ -55,16 +57,30 @@ class MemberQueryRepositoryTest {
         Member member = memberCreator.nextObject(Member.class);
         Member friend1 = memberCreator.nextObject(Member.class);
         Member friend2 = memberCreator.nextObject(Member.class);
+        Member friend3 = memberCreator.nextObject(Member.class);
+        Member friend4 = memberCreator.nextObject(Member.class);
 
         memberRepository.save(member);
         memberRepository.save(friend1);
         memberRepository.save(friend2);
+        memberRepository.save(friend3);
+        memberRepository.save(friend4);
 
         FriendRelation friendRelation1 = FriendRelation.create(member, friend1);
         FriendRelation friendRelation2 = FriendRelation.create(member, friend2);
 
         friendRelationRepository.save(friendRelation1);
         friendRelationRepository.save(friendRelation2);
+
+        FriendRelation friendRelation1 = FriendRelation.create(member, friend1);
+        FriendRelation friendRelation2 = FriendRelation.create(member, friend2);
+        FriendRelation friendRelation3 = FriendRelation.create(member, friend3);
+        FriendRelation friendRelation4 = FriendRelation.create(member, friend4);
+
+        friendRelationRepository.save(friendRelation1);
+        friendRelationRepository.save(friendRelation2);
+        friendRelationRepository.save(friendRelation3);
+        friendRelationRepository.save(friendRelation4);
 
         em.flush();
         em.clear();
@@ -75,6 +91,9 @@ class MemberQueryRepositoryTest {
         for (Member findMember : findMembers) {
             System.out.println("findMember = " + findMember);
             System.out.println("findMember = " + findMember.getFriendsRelations().get(0).getFriendName());
+            for (FriendRelation friendsRelation : findMember.getFriendsRelations()) {
+                System.out.println("friendsRelation = " + friendsRelation.getFriendName());
+            }
         }
 
         // then

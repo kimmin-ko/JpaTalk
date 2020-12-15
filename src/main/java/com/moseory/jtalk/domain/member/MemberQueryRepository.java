@@ -35,7 +35,6 @@ public class MemberQueryRepository {
         return Optional.ofNullable(findMember);
     }
 
-
     /**
      * 변경
      */
