@@ -11,7 +11,6 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.annotation.Rollback;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
@@ -21,16 +20,12 @@ import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-@Rollback(false)
 @Transactional
 @SpringBootTest
 class MemberQueryRepositoryTest {
 
     @Autowired
     MemberRepository memberRepository;
-
-    @Autowired
-    MemberQueryRepository memberQueryRepository;
 
     @Autowired
     FriendRelationRepository friendRelationRepository;
@@ -68,12 +63,6 @@ class MemberQueryRepositoryTest {
 
         FriendRelation friendRelation1 = FriendRelation.create(member, friend1);
         FriendRelation friendRelation2 = FriendRelation.create(member, friend2);
-
-        friendRelationRepository.save(friendRelation1);
-        friendRelationRepository.save(friendRelation2);
-
-        FriendRelation friendRelation1 = FriendRelation.create(member, friend1);
-        FriendRelation friendRelation2 = FriendRelation.create(member, friend2);
         FriendRelation friendRelation3 = FriendRelation.create(member, friend3);
         FriendRelation friendRelation4 = FriendRelation.create(member, friend4);
 
@@ -86,15 +75,7 @@ class MemberQueryRepositoryTest {
         em.clear();
 
         // when
-        List<Member> findMembers = memberQueryRepository.findAllWithFriendRelation();
-
-        for (Member findMember : findMembers) {
-            System.out.println("findMember = " + findMember);
-            System.out.println("findMember = " + findMember.getFriendsRelations().get(0).getFriendName());
-            for (FriendRelation friendsRelation : findMember.getFriendsRelations()) {
-                System.out.println("friendsRelation = " + friendsRelation.getFriendName());
-            }
-        }
+        List<Member> findMembers = memberRepository.findAllWithFriendRelation();
 
         // then
 
@@ -122,7 +103,7 @@ class MemberQueryRepositoryTest {
         em.clear();
 
         // when
-        Member findMember = memberQueryRepository.findWithFriendRelationById(member.getId()).orElseThrow(EntityNotFoundException::new);
+        Member findMember = memberRepository.findWithFriendRelationById(member.getId()).orElseThrow(EntityNotFoundException::new);
         Member findFriend1 = memberRepository.findById(friend1.getId()).orElseThrow(EntityNotFoundException::new);
         Member findFriend2 = memberRepository.findById(friend2.getId()).orElseThrow(EntityNotFoundException::new);
 
@@ -144,5 +125,5 @@ class MemberQueryRepositoryTest {
         assertThat(memberFriend2.getCreatedDate()).isNotNull();
         assertThat(memberFriend2.getId()).isNotZero();
     }
-    
+
 }

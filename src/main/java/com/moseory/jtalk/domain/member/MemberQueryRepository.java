@@ -10,42 +10,40 @@ import java.util.List;
 import java.util.Optional;
 
 import static com.moseory.jtalk.entity.QFriendRelation.friendRelation;
+import static com.moseory.jtalk.entity.QMember.*;
 import static com.moseory.jtalk.entity.QMember.member;
 
 @Repository
 @RequiredArgsConstructor
-public class MemberQueryRepository {
+public class MemberQueryRepository implements MemberRepositorySupport {
 
     private final JPAQueryFactory query;
 
     public List<Member> findAllWithFriendRelation() {
         return query
                 .selectFrom(member)
-                .join(member.friendsRelations)
+                .leftJoin(member.friendsRelations, friendRelation).fetchJoin()
                 .fetch();
     }
 
     public Optional<Member> findWithFriendRelationById(Long memberId) {
         Member findMember = query
                 .selectFrom(member)
-                .join(member.friendsRelations).fetchJoin()
+                .join(member.friendsRelations, friendRelation).fetchJoin()
                 .where(member.id.eq(memberId))
                 .fetchOne();
 
         return Optional.ofNullable(findMember);
     }
 
-    /**
-     * 변경
-     */
-    public List<Member> findFriendsById(Long memberId) {
-        QMember friend = new QMember("friend");
+    public Optional<Member> findWithFriendRelationByIdAndFriend(Long memberId, Long friendId) {
+        Member findFriend = query
+                .selectFrom(member)
+                .join(member.friendsRelations, friendRelation)
+                .where(member.id.eq(memberId).and(friendRelation.friend.id.eq(friendId)))
+                .fetchOne();
 
-        return query
-                .select(friend)
-                .from(friendRelation).fetchJoin()
-                .where(friendRelation.member.id.eq(memberId))
-                .fetch();
+        return Optional.ofNullable(findFriend);
     }
 
 }

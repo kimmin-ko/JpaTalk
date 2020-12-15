@@ -4,18 +4,17 @@ import com.moseory.jtalk.entity.FriendRelation;
 import com.moseory.jtalk.entity.Member;
 import com.moseory.jtalk.entity.enumeration.FriendRelationStatus;
 import com.moseory.jtalk.global.standard.ResultResponse;
+import com.moseory.jtalk.global.validator.BirthDate;
 import com.moseory.jtalk.global.validator.PhoneNumber;
 import lombok.*;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import javax.persistence.EntityNotFoundException;
 import javax.validation.Valid;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Past;
-import java.nio.channels.IllegalSelectorException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -39,6 +38,7 @@ public class MemberApiController {
     private final MemberQueryRepository memberQueryRepository;
 
     @PostMapping("")
+    @ResponseStatus(HttpStatus.CREATED)
     public ResultResponse<MemberJoinResponse> join(@RequestBody @Valid MemberJoinRequest memberJoinRequest) {
         Long memberId = memberService.join(Member.from(memberJoinRequest));
 
@@ -56,14 +56,14 @@ public class MemberApiController {
      * 회원만 조회
      */
     @GetMapping("/{memberId}")
-    public ResultResponse<MemberDto> findMember(@PathVariable("memberId") Long memberId) {
+    public ResultResponse<MemberResponse> findMember(@PathVariable("memberId") Long memberId) {
         Member findMember = memberRepository.findById(memberId)
                 .orElseThrow(() -> new EntityNotFoundException(memberId + "번 회원을 찾을 수 없습니다."));
 
-        return ResultResponse.<MemberDto>builder()
+        return ResultResponse.<MemberResponse>builder()
                 .status(200)
                 .message(findMember.getId() + "번 회원을 조회하였습니다.")
-                .data(MemberDto.from(findMember))
+                .data(MemberResponse.from(findMember))
                 .build();
     }
 
@@ -149,8 +149,7 @@ public class MemberApiController {
         @PhoneNumber
         private String phoneNumber;
 
-        @Past(message = "잘못된 생년월일입니다.")
-        @NotNull(message = "생년월일은 필수값 입니다.")
+        @BirthDate
         private LocalDate birthDate;
     }
 
@@ -180,7 +179,7 @@ public class MemberApiController {
     @Data
     @Builder
     @AllArgsConstructor
-    static class MemberDto {
+    static class MemberResponse {
         private Long memberId;
         private String account;
         private String email;
@@ -190,8 +189,8 @@ public class MemberApiController {
         private String profileUrl;
         private LocalDate birthDate;
 
-        public static MemberDto from(Member member) {
-            return MemberDto.builder()
+        public static MemberResponse from(Member member) {
+            return MemberResponse.builder()
                     .memberId(member.getId())
                     .account(member.getAccount())
                     .email(member.getEmail())

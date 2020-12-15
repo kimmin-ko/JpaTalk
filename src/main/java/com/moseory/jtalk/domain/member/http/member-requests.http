@@ -1,0 +1,18 @@
+### 회원 등록
+POST {{root_url}}/api/members
+Content-Type: application/json
+
+{
+  "account": "member4 account",
+  "email": "member4@gmail.com",
+  "password": "password",
+  "name": "member4",
+  "phoneNumber":"010-3465-1221",
+  "birthDate": "2000-07-05"
+}
+
+### 회원 조회
+GET {{root_url}}/api/members/1
+
+### 친구 추가
+POST {{root_url}}/api/members/1/friends/5

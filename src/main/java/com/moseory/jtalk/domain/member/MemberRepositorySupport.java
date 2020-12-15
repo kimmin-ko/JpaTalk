@@ -5,10 +5,12 @@ import com.moseory.jtalk.entity.Member;
 import java.util.List;
 import java.util.Optional;
 
-public interface MemberRepositoryCustom {
+public interface MemberRepositorySupport {
 
     Optional<Member> findWithFriendRelationById(Long id);
 
     List<Member> findAllWithFriendRelation();
+
+    Optional<Member> findWithFriendRelationByIdAndFriend(Long memberId, Long friendId);
 
 }

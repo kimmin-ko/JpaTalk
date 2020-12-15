@@ -102,7 +102,7 @@ class MemberApiControllerTest extends AbstractApiControllerTest {
         );
 
         // then
-        result.andExpect(status().isOk())
+        result.andExpect(status().isCreated())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("$.status", is(200)))
                 .andExpect(jsonPath("$.message", is("회원가입을 성공하였습니다.")))
