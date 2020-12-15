@@ -52,12 +52,29 @@ class MemberQueryRepositoryTest {
     @Test
     void findAllWithFriendRelation() {
         // given
+        Member member = memberCreator.nextObject(Member.class);
+        Member friend1 = memberCreator.nextObject(Member.class);
+        Member friend2 = memberCreator.nextObject(Member.class);
+
+        memberRepository.save(member);
+        memberRepository.save(friend1);
+        memberRepository.save(friend2);
+
+        FriendRelation friendRelation1 = FriendRelation.create(member, friend1);
+        FriendRelation friendRelation2 = FriendRelation.create(member, friend2);
+
+        friendRelationRepository.save(friendRelation1);
+        friendRelationRepository.save(friendRelation2);
+
+        em.flush();
+        em.clear();
 
         // when
         List<Member> findMembers = memberQueryRepository.findAllWithFriendRelation();
 
         for (Member findMember : findMembers) {
             System.out.println("findMember = " + findMember);
+            System.out.println("findMember = " + findMember.getFriendsRelations().get(0).getFriendName());
         }
 
         // then

@@ -16,10 +16,6 @@ import static com.moseory.jtalk.entity.QMember.member;
 @RequiredArgsConstructor
 public class MemberQueryRepository {
 
-    /**
-     * 변경
-     * JPAQueryFactory Spring Bean으로 만들어서 DI하여 사용
-     */
     private final JPAQueryFactory query;
 
     public List<Member> findAllWithFriendRelation() {
@@ -32,7 +28,7 @@ public class MemberQueryRepository {
     public Optional<Member> findWithFriendRelationById(Long memberId) {
         Member findMember = query
                 .selectFrom(member)
-                .join(member.friendsRelations)
+                .join(member.friendsRelations).fetchJoin()
                 .where(member.id.eq(memberId))
                 .fetchOne();
 
