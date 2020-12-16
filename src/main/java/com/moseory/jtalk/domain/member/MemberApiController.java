@@ -35,7 +35,7 @@ public class MemberApiController {
     /* inject */
     private final MemberService memberService;
     private final MemberRepository memberRepository;
-    private final MemberQueryRepository memberQueryRepository;
+    private final MemberRepositoryImpl memberRepositoryImpl;
 
     @PostMapping("")
     @ResponseStatus(HttpStatus.CREATED)
@@ -86,7 +86,7 @@ public class MemberApiController {
      */
     @GetMapping("{memberId}/friendRelations")
     public ResultResponse<MemberFriendRelationResponse> findMemberWithFriendRelation(@PathVariable("memberId") Long memberId) {
-        Member findMember = memberQueryRepository.findWithFriendRelationById(memberId)
+        Member findMember = memberRepositoryImpl.findWithFriendRelationById(memberId)
                 .orElseThrow(() -> new EntityNotFoundException(memberId + "번 회원을 찾을 수 없습니다."));
 
         return ResultResponse.<MemberFriendRelationResponse>builder()

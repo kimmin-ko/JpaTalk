@@ -50,7 +50,7 @@ class MemberApiControllerTest extends AbstractApiControllerTest {
     MemberRepository memberRepository;
 
     @MockBean
-    MemberQueryRepository memberQueryRepository;
+    MemberRepositoryImpl memberRepositoryImpl;
 
     static EnhancedRandom memberCreator;
     static EnhancedRandom friendRelationCreator;
@@ -251,7 +251,7 @@ class MemberApiControllerTest extends AbstractApiControllerTest {
         member.getFriendsRelations().add(friendRelation2);
         member.getFriendsRelations().add(friendRelation3);
 
-        given(memberQueryRepository.findWithFriendRelationById(member.getId())).willReturn(Optional.of(member));
+        given(memberRepositoryImpl.findWithFriendRelationById(member.getId())).willReturn(Optional.of(member));
 
         // when
         ResultActions result = mockMvc.perform(
