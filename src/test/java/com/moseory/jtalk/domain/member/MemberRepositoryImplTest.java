@@ -8,14 +8,18 @@ import io.github.benas.randombeans.EnhancedRandomBuilder;
 import io.github.benas.randombeans.api.EnhancedRandom;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.DisplayNameGeneration;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.annotation.Rollback;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.lang.model.SourceVersion;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityNotFoundException;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -47,35 +51,36 @@ class MemberRepositoryImplTest {
     }
 
     @Test
+    @DisplayName("")
+    @Rollback(false)
     void findAllWithFriendRelation() {
         // given
-        Member member = memberCreator.nextObject(Member.class);
-        Member friend1 = memberCreator.nextObject(Member.class);
-        Member friend2 = memberCreator.nextObject(Member.class);
-        Member friend3 = memberCreator.nextObject(Member.class);
-        Member friend4 = memberCreator.nextObject(Member.class);
+        List<Member> members = new ArrayList<>();
 
-        memberRepository.save(member);
-        memberRepository.save(friend1);
-        memberRepository.save(friend2);
-        memberRepository.save(friend3);
-        memberRepository.save(friend4);
+        for (int i = 0; i < 11; i++) {
+            members.add(memberCreator.nextObject(Member.class));
+        }
+        memberRepository.saveAll(members);
 
-        FriendRelation friendRelation1 = FriendRelation.create(member, friend1);
-        FriendRelation friendRelation2 = FriendRelation.create(member, friend2);
-        FriendRelation friendRelation3 = FriendRelation.create(member, friend3);
-        FriendRelation friendRelation4 = FriendRelation.create(member, friend4);
-
-        friendRelationRepository.save(friendRelation1);
-        friendRelationRepository.save(friendRelation2);
-        friendRelationRepository.save(friendRelation3);
-        friendRelationRepository.save(friendRelation4);
+        List<FriendRelation> relations = new ArrayList<>();
+        for (int i = 1; i < 10; i++) {
+            relations.add(FriendRelation.create(members.get(0), members.get(i)));
+            relations.add(FriendRelation.create(members.get(1), members.get(i + 1)));
+        }
+        friendRelationRepository.saveAll(relations);
 
         em.flush();
         em.clear();
 
         // when
         List<Member> findMembers = memberRepository.findAllWithFriendRelation();
+
+        for (Member findMember : findMembers) {
+            System.out.println("findMember = " + findMember);
+            for (FriendRelation friendsRelation : findMember.getFriendsRelations()) {
+                System.out.println("friendsRelation = " + friendsRelation.getFriendName());
+            }
+        }
 
         // then
 

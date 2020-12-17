@@ -21,7 +21,7 @@ public class MemberRepositoryImpl implements MemberRepositoryCustom {
     public List<Member> findAllWithFriendRelation() {
         return query
                 .selectFrom(member)
-                .leftJoin(member.friendsRelations, friendRelation).fetchJoin()
+                .leftJoin(member.friendsRelations, friendRelation)
                 .fetch();
     }
 

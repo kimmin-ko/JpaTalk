@@ -49,7 +49,8 @@ public class MemberApiController {
                 .build();
     }
 
-    /** 변경
+    /**
+     * 변경
      * [Before]
      * 회원 및 친구 관계 함께 조회
      * [After]
@@ -67,8 +68,11 @@ public class MemberApiController {
                 .build();
     }
 
-    //TODO 똑같은 친구가 계속 추가됨
-    //TODO 자기 자신도 추가됨
+    /**
+     * 변경
+     * 똑같은 친구가 계속 추가됨
+     * 자기 자신도 추가됨
+     */
     @PostMapping("/{memberId}/friends/{friendId}")
     public ResultResponse<AddFriendResponse> addFriends(@PathVariable("memberId") Long memberId,
                                                         @PathVariable("friendId") Long friendId) {
@@ -81,7 +85,8 @@ public class MemberApiController {
                 .build();
     }
 
-    /** 변경
+    /**
+     * 변경
      * 회원과 모든 친구관계 조회
      */
     @GetMapping("{memberId}/friendRelations")
