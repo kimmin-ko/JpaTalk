@@ -79,14 +79,14 @@ class MemberApiControllerTest extends AbstractApiControllerTest {
     @Test
     @DisplayName("정상적인 회원가입 성공 테스트")
     void join() throws Exception {
-        // given
-        MemberJoinRequest memberJoinRequest = MemberJoinRequest.builder()
-                .account("account")
-                .email("memberA@naver.com")
-                .password("password")
-                .name("memberA")
-                .phoneNumber("010-1234-5678")
-                .birthDate(LocalDate.of(1992, 2, 16))
+                        // given
+                        MemberJoinRequest memberJoinRequest = MemberJoinRequest.builder()
+                                .account("account")
+                                .email("memberA@naver.com")
+                                .password("password")
+                                .name("memberA")
+                                .phoneNumber("010-1234-5678")
+                                .birthDate(LocalDate.of(1992, 2, 16))
                 .build();
 
         Member member = Member.from(memberJoinRequest);

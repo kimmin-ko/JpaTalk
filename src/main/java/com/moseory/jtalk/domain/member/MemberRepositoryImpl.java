@@ -5,6 +5,7 @@ import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
+import javax.persistence.EntityManager;
 import java.util.List;
 import java.util.Optional;
 
@@ -16,14 +17,6 @@ import static com.moseory.jtalk.entity.QMember.member;
 public class MemberRepositoryImpl implements MemberRepositoryCustom {
 
     private final JPAQueryFactory query;
-
-    @Override
-    public List<Member> findAllWithFriendRelation() {
-        return query
-                .selectFrom(member)
-                .leftJoin(member.friendsRelations, friendRelation)
-                .fetch();
-    }
 
     @Override
     public Optional<Member> findWithFriendRelationById(Long memberId) {

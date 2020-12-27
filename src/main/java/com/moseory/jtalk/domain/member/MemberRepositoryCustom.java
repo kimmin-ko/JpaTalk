@@ -9,8 +9,6 @@ public interface MemberRepositoryCustom {
 
     Optional<Member> findWithFriendRelationById(Long id);
 
-    List<Member> findAllWithFriendRelation();
-
     Optional<Member> findWithFriendRelationByIdAndFriend(Long memberId, Long friendId);
 
 }

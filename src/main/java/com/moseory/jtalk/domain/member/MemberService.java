@@ -34,6 +34,7 @@ public class MemberService {
         Member member = memberRepository.findById(memberId).orElseThrow(() -> new EntityNotFoundException("회원을 찾을 수 없습니다"));
         Member friend = memberRepository.findById(friendId).orElseThrow(() -> new EntityNotFoundException("친구를 찾을 수 없습니다"));
 
+        //TODO exists로 변경
         boolean existsFriend = memberRepository.findWithFriendRelationByIdAndFriend(memberId, friendId).isPresent();
         if(existsFriend)
             throw new IllegalArgumentException("이미 친구입니다.");

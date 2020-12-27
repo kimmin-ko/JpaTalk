@@ -51,42 +51,6 @@ class MemberRepositoryImplTest {
     }
 
     @Test
-    @DisplayName("")
-    @Rollback(false)
-    void findAllWithFriendRelation() {
-        // given
-        List<Member> members = new ArrayList<>();
-
-        for (int i = 0; i < 11; i++) {
-            members.add(memberCreator.nextObject(Member.class));
-        }
-        memberRepository.saveAll(members);
-
-        List<FriendRelation> relations = new ArrayList<>();
-        for (int i = 1; i < 10; i++) {
-            relations.add(FriendRelation.create(members.get(0), members.get(i)));
-            relations.add(FriendRelation.create(members.get(1), members.get(i + 1)));
-        }
-        friendRelationRepository.saveAll(relations);
-
-        em.flush();
-        em.clear();
-
-        // when
-        List<Member> findMembers = memberRepository.findAllWithFriendRelation();
-
-        for (Member findMember : findMembers) {
-            System.out.println("findMember = " + findMember);
-            for (FriendRelation friendsRelation : findMember.getFriendsRelations()) {
-                System.out.println("friendsRelation = " + friendsRelation.getFriendName());
-            }
-        }
-
-        // then
-
-    }
-
-    @Test
     @DisplayName("정상적인 회원 등록 후 친구 추가하여 패치 조인하여 조회")
     void findById() {
         // given
